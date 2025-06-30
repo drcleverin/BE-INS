@@ -2,14 +2,14 @@ package com.insurance.InsuranceApp.dto;
 // src/main/java/com/example/policyapp/dto/PolicyDTO.java
 
 
-import jakarta.validation.constraints.Future;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
 
 /**
  * Data Transfer Object for Policy creation and response.
@@ -28,7 +28,7 @@ public class PolicyDTO {
 
     @NotNull(message = "Policy start date cannot be null")
 //    @FutureOrPresent(message = "Policy start date must be in the present or future")
-    @FutureOrPresent
+    @PastOrPresent
     private LocalDate policyStartDate;
 
     @NotBlank(message = "Policy status cannot be blank")

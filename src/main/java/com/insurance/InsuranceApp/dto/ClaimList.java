@@ -55,6 +55,26 @@ public class ClaimList {
     private String location;
     
     private LocalTime timeOfIncident;
+    
+    private BigDecimal sumInsured;
+    
+    private BigDecimal premium;
+
+	public BigDecimal getPremium() {
+		return premium;
+	}
+
+	public void setPremium(BigDecimal premium) {
+		this.premium = premium;
+	}
+
+	public BigDecimal getSumInsured() {
+		return sumInsured;
+	}
+
+	public void setSumInsured(BigDecimal sumInsured) {
+		this.sumInsured = sumInsured;
+	}
 
 	public LocalDate getDateOfIncident() {
 		return dateOfIncident;
