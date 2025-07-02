@@ -51,8 +51,9 @@ public class PolicyDTO {
     private Long vehicleId;
     
     private String planName;
-
-    public String getPlanName() {
+    
+    
+	public String getPlanName() {
 		return planName;
 	}
 

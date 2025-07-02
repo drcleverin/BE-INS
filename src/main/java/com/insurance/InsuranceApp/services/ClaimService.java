@@ -75,6 +75,7 @@ public class ClaimService {
         dto.setSumInsured(claim.getSumInsured());
         dto.setTimeOfIncident(claim.getTimeOfIncident());
         dto.setPolicyId(claim.getPolicy().getPolicyId());
+        dto.setUserId(claim.getPolicy().getUserId());
         return dto;
     }
 }

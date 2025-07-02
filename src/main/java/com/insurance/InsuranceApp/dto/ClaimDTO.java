@@ -127,4 +127,17 @@ public class ClaimDTO {
 
     @NotNull(message = "Policy ID is required for a claim")
     private Long policyId; // This is how you link it to a policy from the frontend
+    
+    @NotNull(message = "Policy ID is required for a claim")
+    private Long userId;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+    
+    
 }

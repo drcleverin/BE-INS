@@ -174,8 +174,13 @@ public class DashboardService {
         dto.setPolicyStatus(policy.getPolicyStatus());
         dto.setPremiumAmount(policy.getPremiumAmount());
         dto.setUserId(policy.getUserId());
-        dto.setVehicleId(policy.getVehicleId()); // Can be null
-
+        if (policy.getVehicle() != null) { // This is the crucial change
+            dto.setVehicleId(policy.getVehicle().getVehicleId());
+            dto.setRegistrationNumber(policy.getVehicle().getRegistrationNumber()); // Line 178 or nearby
+        } else {
+            dto.setVehicleId(null); // Explicitly set to null if no vehicle
+            dto.setRegistrationNumber(null); // Explicitly set to null if no vehicle
+        }
         // Populate details from associated InsurancePlan
         if (policy.getInsurancePlan() != null) {
             dto.setPlanId(policy.getInsurancePlan().getPlanId());

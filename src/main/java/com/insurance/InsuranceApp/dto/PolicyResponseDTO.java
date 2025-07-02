@@ -29,6 +29,16 @@ public class PolicyResponseDTO {
     private BigDecimal coverage; // Sum Insured from InsurancePlan
 
     private String descriptionAboutPolicy;
+    private String registrationNumber;
+
+    public String getRegistrationNumber() {
+		return registrationNumber;
+	}
+
+	public void setRegistrationNumber(String registrationNumber) {
+		this.registrationNumber = registrationNumber;
+	}
+
 
     // Constructors
     public PolicyResponseDTO() {
