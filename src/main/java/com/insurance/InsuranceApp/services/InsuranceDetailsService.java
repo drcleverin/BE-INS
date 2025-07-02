@@ -233,7 +233,7 @@ public class InsuranceDetailsService {
                 // Fetch PersonalDetails using the user_id from the Policy's User object.
                 // Assuming PersonalDetails has a direct relationship back to User.
                 // In PersonalDetails entity, @JoinColumn(name = "user_id") maps to User's primary key.
-                personalDetails = personalDetailsRepository.findByUserId(policy.getUser().getUserId());
+                personalDetails = personalDetailsRepository.findTopByUserIdOrderByPersonalDetailsIdDesc(policy.getUser().getUserId());
             }
 
             if (personalDetails != null) {
@@ -283,7 +283,7 @@ public class InsuranceDetailsService {
                     User user = userOptional.get();
                     String customerEmail = user.getEmail();
                     // Fetch customer name from PersonalDetails
-                    PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getUserId());
+                    PersonalDetails personalDetails = personalDetailsRepository.findTopByUserIdOrderByPersonalDetailsIdDesc(user.getUserId());
                     String customerName = (personalDetails != null) ?
                                           personalDetails.getFirstName() + " " + personalDetails.getLastName() :
                                           "Valued Customer";

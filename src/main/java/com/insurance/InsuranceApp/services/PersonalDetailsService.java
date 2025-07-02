@@ -114,8 +114,9 @@ public class PersonalDetailsService {
         return personalDetailsRepository.save(personalDetails);
     }
 
+ // In PersonalDetailsService.java
     public PersonalDetails getPersonalDetailsByUserId(Long userId) {
-        return personalDetailsRepository.findByUserId(userId);
+        return personalDetailsRepository.findTopByUserIdOrderByPersonalDetailsIdDesc(userId);
     }
 
     // New method to update personal details

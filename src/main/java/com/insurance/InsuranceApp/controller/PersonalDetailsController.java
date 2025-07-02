@@ -99,7 +99,22 @@ public class PersonalDetailsController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
+    @PostMapping("/save")
+  public ResponseEntity<PersonalDetails> savePersonalDetails(@Valid @RequestBody PersonalDetailsDTO personalDetailsDTO) {
+      try {
+      	System.out.println("from /save/.............");
+      	System.out.println(personalDetailsDTO+ "............. form personalCOntroller");
+          PersonalDetails savedDetails = personalDetailsService.savePersonalDetails(personalDetailsDTO);
+          return new ResponseEntity<>(savedDetails, HttpStatus.CREATED);
+      } catch (IllegalArgumentException e) {
+          // Handle cases where User ID is not found
+          return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+      } catch (Exception e) {
+          // Generic error handling
+          return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+  }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<PersonalDetails> getPersonalDetailsByUserId(@PathVariable Long userId) {

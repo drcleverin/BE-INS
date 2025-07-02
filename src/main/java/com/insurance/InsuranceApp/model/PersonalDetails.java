@@ -111,7 +111,7 @@ public class PersonalDetails {
     private Long personalDetailsId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", unique = true)
+    @JoinColumn(name = "user_id",unique=true)
 	@JsonIgnore
     private User user;
 
