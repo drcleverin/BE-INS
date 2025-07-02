@@ -175,6 +175,7 @@ public class PolicyService {
         dto.setPolicyStatus(policy.getPolicyStatus());
         dto.setPremiumAmount(policy.getPremiumAmount());
         dto.setPlanId(policy.getInsurancePlan().getPlanId());
+        dto.setPlanName(policy.getInsurancePlan().getPlanName());
         dto.setUserId(policy.getUser().getUserId());
         dto.setVehicleId(policy.getVehicle() != null ? policy.getVehicle().getVehicleId() : null);
         return dto;

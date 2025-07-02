@@ -49,13 +49,23 @@ public class PolicyDTO {
 //    @NotNull(message = "Vehicle ID cannot be null")
 //    @Positive(message = "Vehicle ID must be a positive value")
     private Long vehicleId;
+    
+    private String planName;
 
-    // Constructors
+    public String getPlanName() {
+		return planName;
+	}
+
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+
+	// Constructors
     public PolicyDTO() {
     }
 
     public PolicyDTO(Long policyId, LocalDate policyEndDate, LocalDate policyStartDate, String policyStatus,
-                     BigDecimal premiumAmount, Long planId, Long userId, Long vehicleId) {
+                     BigDecimal premiumAmount, Long planId, Long userId, Long vehicleId,String planName) {
         this.policyId = policyId;
         this.policyEndDate = policyEndDate;
         this.policyStartDate = policyStartDate;
@@ -64,6 +74,7 @@ public class PolicyDTO {
         this.planId = planId;
         this.userId = userId;
         this.vehicleId = vehicleId;
+        this.planName = planName;
     }
 
     // Getters and Setters

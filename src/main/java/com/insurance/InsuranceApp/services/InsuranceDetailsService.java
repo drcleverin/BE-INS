@@ -120,23 +120,26 @@
 //}
 package com.insurance.InsuranceApp.services;
 
-import com.insurance.InsuranceApp.model.Claim;
-import com.insurance.InsuranceApp.model.Policy;
-import com.insurance.InsuranceApp.model.PersonalDetails;
-import com.insurance.InsuranceApp.model.InsurancePlan;
-import com.insurance.InsuranceApp.dto.ClaimList;
-import com.insurance.InsuranceApp.dto.ClaimUpdateDto; // Import the new DTO
-import com.insurance.InsuranceApp.repository.ClaimRepository;
-import com.insurance.InsuranceApp.repository.PolicyRepository;
-import com.insurance.InsuranceApp.repository.PersonalDetailsRepository;
-import com.insurance.InsuranceApp.repository.InsurancePlanRepository;
+import java.util.List;
+import java.util.Optional; // Import Optional for handling potential null results from findById
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional; // Import Optional for handling potential null results from findById
-import java.util.stream.Collectors;
+import com.insurance.InsuranceApp.dto.ClaimList;
+import com.insurance.InsuranceApp.dto.ClaimUpdateDto; // Import the new DTO
+import com.insurance.InsuranceApp.model.Claim;
+import com.insurance.InsuranceApp.model.InsurancePlan;
+import com.insurance.InsuranceApp.model.PersonalDetails;
+import com.insurance.InsuranceApp.model.Policy;
+import com.insurance.InsuranceApp.model.User;
+import com.insurance.InsuranceApp.repository.ClaimRepository;
+import com.insurance.InsuranceApp.repository.InsurancePlanRepository;
+import com.insurance.InsuranceApp.repository.PersonalDetailsRepository;
+import com.insurance.InsuranceApp.repository.PolicyRepository;
+import com.insurance.InsuranceApp.repository.UserRepository;
 
 /**
  * Service class to handle business logic related to insurance details,
@@ -146,20 +149,26 @@ import java.util.stream.Collectors;
 @Service
 public class InsuranceDetailsService {
 
-    private final ClaimRepository claimRepository;
+	private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
     private final PersonalDetailsRepository personalDetailsRepository;
     private final InsurancePlanRepository insurancePlanRepository;
+    private final EmailService emailService; // Inject EmailService
+    private final UserRepository userRepository; // Inject UserRepository
 
     @Autowired
     public InsuranceDetailsService(ClaimRepository claimRepository,
                                    PolicyRepository policyRepository,
                                    PersonalDetailsRepository personalDetailsRepository,
-                                   InsurancePlanRepository insurancePlanRepository) {
+                                   InsurancePlanRepository insurancePlanRepository,
+                                   EmailService emailService, // Added to constructor
+                                   UserRepository userRepository) { // Added to constructor
         this.claimRepository = claimRepository;
         this.policyRepository = policyRepository;
         this.personalDetailsRepository = personalDetailsRepository;
         this.insurancePlanRepository = insurancePlanRepository;
+        this.emailService = emailService; // Assign
+        this.userRepository = userRepository; // Assign
     }
 
     /**
@@ -267,6 +276,21 @@ public class InsuranceDetailsService {
 
             // Save the updated claim
             claimRepository.save(existingClaim);
+            Policy policy = existingClaim.getPolicy();
+            if (policy != null && policy.getUser() != null) {
+                Optional<User> userOptional = userRepository.findById(policy.getUser().getUserId());
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    String customerEmail = user.getEmail();
+                    // Fetch customer name from PersonalDetails
+                    PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getUserId());
+                    String customerName = (personalDetails != null) ?
+                                          personalDetails.getFirstName() + " " + personalDetails.getLastName() :
+                                          "Valued Customer";
+
+                    emailService.sendClaimUpdateEmail(customerEmail, customerName, claimId, claimUpdateDto);
+                }
+            }
             return true; // Claim updated successfully
         } else {
             return false; // Claim not found
